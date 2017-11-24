@@ -12,11 +12,16 @@ client_id and client_secret are the values that generated from Azure AD app regi
 ```
 username and password are the credentials that you use to authenticate with Azure.
 ```
-* 5th line => app_id_uri (Run the following PowerShell command on asdk to get the app_id_uri.)
+* 5th line => app_id_uri
 ```
+Run the following PowerShell command on asdk to get the app_id_uri
+
 (Invoke-RestMethod "http://{adminmanagement_url}/metadata/endpoints?api-version=2015-01-01").authentication.audiences[0]
 ```
-* 6th line => directory_id (Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID)
+* 6th line => directory_id
+```
+Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID
+```
 * 7th line => admin_arm_url
 ```
 {adminmanagement_url}
