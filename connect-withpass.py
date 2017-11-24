@@ -31,29 +31,30 @@ response = requests.post(microsoft_url, data = post_data, headers = post_headers
 result_json = json.loads(response.text)
 my_token = result_json['access_token']
 
-# get tenantId
+# get subscriptionId
 admin_sub_url = admin_arm_url + "/subscriptions/?api-version=2015-06-01-preview"
 get_headers = { "Content-Type": "application/json", "Authorization": "Bearer " + my_token }
 get_response = requests.get(admin_sub_url, headers=get_headers, verify=False)
 get_response_json = json.loads(get_response.text)
 output_subscription_id = get_response_json['value'][0]['subscriptionId']
-output_tenantId = get_response_json['value'][0]['tenantId']
-#print(get_response_json)
 print("subscription id: " + output_subscription_id)
 print("tenant id: " + output_tenantId)
-# tenantId is User subscription id
-output_tenantId = "0bbebd9d-457d-40e2-a0ee-536276e2bff5"
+
+# get all tenants information
+list_tenants_url = admin_arm_url + "/subscriptions/" + output_subscription_id + "/providers/Microsoft.Subscriptions.Admin/subscriptions?api-version=2015-11-01&$filter="
+list_tenants_response = requests.get(list_tenants_url, headers=get_headers, verify=False)
+list_tenants_response_json = json.loads(list_tenants_response.text)
+print(json.dumps(list_tenants_response_json, indent=4))
 
 # get usage for tenantId
-#storage_url = "https://adminmanagement.asdk2.umbrellar.io/subscriptions/" + output_subscription_id + "/providers/Microsoft.Compute.Admin/locations/local/quotas/Cloud%20PAYG%20Base%20Compute%20Quota%2001?api-version=2015-12-01-preview"
-#usage_url = "https://adminmanagement.asdk2.umbrellar.io/subscriptions/" + output_subscription_id + "/providers/Microsoft.Commerce/subscriberUsageAggregates?reportedStartTime=2017-11-01&reportedEndTime=2017-11-20&aggregationGranularity=Daily&subscriberId=" + output_tenantId + "&api-version=2015-06-01-preview"
-usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=2017-11-21&reportedEndTime=2017-11-22&aggregationGranularity=Hourly&subscriberId=" + output_tenantId+ "&api-version=2015-06-01-preview"
-#print(storage_url)
+select_tenantId = "0bbebd9d-457d-40e2-a0ee-536276e2bff5"
+usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=2017-11-21&reportedEndTime=2017-11-22&aggregationGranularity=Hourly&subscriberId=" + select_tenantId + "&api-version=2015-06-01-preview"
 usage = requests.get(usage_url, headers=get_headers, verify=False)
 usage_json = json.loads(usage.text)
-#usage_json_dump = json.dumps(usage_json, sort_keys=True, indent=4)
+usage_json_dump = json.dumps(usage_json, sort_keys=True, indent=4)
 print(len(usage_json['value']))
-# print(usage_json['nextLink'])
+
+#print(usage_json['nextLink'])
 # if result is more than one page, use the nextLink.
 
 # while (usage_json['nextLink']):
