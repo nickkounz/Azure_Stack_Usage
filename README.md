@@ -30,3 +30,5 @@ Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID
 * connect-withpass.py
 * regex-metering.py
 * _PRIVATEwithPass.txt
+## More
+[Use this link to see more](http://www.nikknz.com/2017/11/use-python-to-get-admintenants-usage.html)
