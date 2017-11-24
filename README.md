@@ -24,5 +24,9 @@ Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID
 ```
 * 7th line => admin_arm_url
 ```
-{adminmanagement_url}
+{adminmanagement_url} for example, https://adminportal.local.azurestack.external
 ```
+## Components
+### connect-withpass.py
+### regex-metering.py
+### _PRIVATEwithPass.txt
