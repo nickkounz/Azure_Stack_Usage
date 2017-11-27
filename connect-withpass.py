@@ -52,26 +52,34 @@ def return_tenant_info(display_name):
         if tenant['displayName'] == display_name:
             return json.dumps(tenant,indent=4)
 
-# print(display_tenant_info("MySub"))
-
 # return tenant id
 def return_tenant_id(display_name):
     for tenant in list_tenants_response_json['value']:
         if tenant['displayName'] == display_name:
             return tenant['subscriptionId']
 
-# print(return_tenant_id('MySub'))
-
-
 # get usage for tenantId
+# define the report rule information
 select_tenantId = return_tenant_id('MySub')
-usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=2017-11-21&reportedEndTime=2017-11-22&aggregationGranularity=Hourly&subscriberId=" + select_tenantId + "&api-version=2015-06-01-preview"
+start_time = "2017-11-21"
+end_time = "2017-11-22"
+granularity = "Hourly"
+api_version = "2015-06-01-preview"
+usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
+            "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=" + start_time + \
+            "&reportedEndTime=" + end_time + \
+            "&aggregationGranularity=" + granularity + "&subscriberId=" + select_tenantId + \
+            "&api-version=" + api_version
+
 usage = requests.get(usage_url, headers=get_headers, verify=False)
 usage_json = json.loads(usage.text)
 usage_json_dump = json.dumps(usage_json, indent=4)
 next_url=usage_json['nextLink']
 # print(usage_json)
-#print(len(usage_json['value']))
+# print(len(usage_json['value']))
+
+# give report a name
+report_name = select_tenantId + ".txt"
 # with open('report1.txt', 'w+') as report:
 #     report.write(usage_json_dump)
 
@@ -79,7 +87,7 @@ next_url=usage_json['nextLink']
 next_usage = requests.get(next_url, headers=get_headers, verify=False)
 next_usage_json = json.loads(next_usage.text)
 next_usage_json_dump = json.dumps(next_usage_json, indent=4)
-#print(len(next_usage_json['value']))
+# print(len(next_usage_json['value']))
 # with open('report2.txt', 'w+') as report:
 #     report.write(next_usage_json_dump)
 
