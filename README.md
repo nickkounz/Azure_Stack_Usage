@@ -28,7 +28,9 @@ Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID
 ```
 ## Components
 * connect-withpass.py
+get the reports
 * regex-metering.py
+get the meter ids with no duplications
 * _PRIVATEwithPass.txt
 ## More
 [Use this link to see more](http://www.nikknz.com/2017/11/use-python-to-get-admintenants-usage.html)
