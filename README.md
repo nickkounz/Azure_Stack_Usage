@@ -27,10 +27,8 @@ Login to Microsoft Azure > Azure Active Directory > Properties > Directory ID
 {adminmanagement_url} for example, https://adminportal.local.azurestack.external
 ```
 ## Components
-* connect-withpass.py
-get the reports
-* regex-metering.py
-get the meter ids with no duplications
-* _PRIVATEwithPass.txt
+* connect-withpass.py - get the reports
+* regex-metering.py - get the meter ids with no duplications
+* _PRIVATEwithPass.txt - declare all your credentials
 ## More
 [Use this link to see more](http://www.nikknz.com/2017/11/use-python-to-get-admintenants-usage.html)
