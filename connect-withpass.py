@@ -58,30 +58,40 @@ def return_tenant_id(display_name):
         if tenant['displayName'] == display_name:
             return tenant['subscriptionId']
 
+# write report to
+def write_report(file_name, file_content):
+    with open(file_name, 'a+') as report:
+        report.write(file_content)
+
+# def append_report(file_name, file_content):
+#     with open(file_name, 'a+') as report:
+#         report.write(file_content)
+
 # get usage for tenantId
 # define the report rule information
-select_tenantId = return_tenant_id('MySub')
-start_time = "2017-11-21"
-end_time = "2017-11-22"
+tenant_sub_name = 'vm_sub'
+select_tenantId = return_tenant_id(tenant_sub_name)
+start_time = "2017-11-27"
+end_time = "2017-11-28"
 granularity = "Hourly"
 api_version = "2015-06-01-preview"
 usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
             "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=" + start_time + \
             "&reportedEndTime=" + end_time + \
-            "&aggregationGranularity=" + granularity + "&subscriberId=" + select_tenantId + \
+            "&aggregationGranularity=" + granularity  + \
             "&api-version=" + api_version
 
+# initial get request
 usage = requests.get(usage_url, headers=get_headers, verify=False)
 usage_json = json.loads(usage.text)
-usage_json_dump = json.dumps(usage_json, indent=4)
-next_url=usage_json['nextLink']
-# print(usage_json)
-# print(len(usage_json['value']))
+usage_value = usage_json['value']
+usage_value_dump = json.dumps(usage_value, indent=4)
+next_url = usage_json['nextLink']
 
 # give report a name
-report_name = select_tenantId + ".txt"
-# with open('report1.txt', 'w+') as report:
-#     report.write(usage_json_dump)
+report_name = tenant_sub_name + "FROM" + start_time + "TO" + end_time + granularity + ".txt"
+#print(usage_value_dump)
+write_report(report_name, usage_value_dump)
 
 # get next page usage
 next_usage = requests.get(next_url, headers=get_headers, verify=False)
@@ -97,10 +107,12 @@ next_usage_json_dump = json.dumps(next_usage_json, indent=4)
 while (usage_json['nextLink']):
     usage_next = requests.get(usage_json['nextLink'], headers=get_headers, verify=False)
     usage_next_json = json.loads(usage_next.text)
-    usage_next_json_dump = json.dumps(usage_next_json, sort_keys=True, indent=4)
+    usage_next_value = usage_next_json['value']
+    usage_next_value_dump = json.dumps(usage_next_value, sort_keys=True, indent=4)
     try:
         usage_json['nextLink'] = usage_next_json['nextLink']
-        print(usage_next_json['nextLink'])
+        write_report(report_name, usage_next_value_dump)
+        #print(usage_next_value)
     except KeyError:
         print("End of Report.")
         usage_json['nextLink'] = False
