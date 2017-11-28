@@ -58,14 +58,10 @@ def return_tenant_id(display_name):
         if tenant['displayName'] == display_name:
             return tenant['subscriptionId']
 
-# write report to
+# write report
 def write_report(file_name, file_content):
     with open(file_name, 'a+') as report:
         report.write(file_content)
-
-# def append_report(file_name, file_content):
-#     with open(file_name, 'a+') as report:
-#         report.write(file_content)
 
 # get usage for tenantId
 # define the report rule information
@@ -86,24 +82,22 @@ usage = requests.get(usage_url, headers=get_headers, verify=False)
 usage_json = json.loads(usage.text)
 usage_value = usage_json['value']
 usage_value_dump = json.dumps(usage_value, indent=4)
-next_url = usage_json['nextLink']
+
+# check if nextLink is available
+try:
+    next_url = usage_json['nextLink']
+except:
+    print("nextLink is not available.")
 
 # give report a name
 report_name = tenant_sub_name + "FROM" + start_time + "TO" + end_time + granularity + ".txt"
-#print(usage_value_dump)
 write_report(report_name, usage_value_dump)
 
 # get next page usage
 next_usage = requests.get(next_url, headers=get_headers, verify=False)
 next_usage_json = json.loads(next_usage.text)
-next_usage_json_dump = json.dumps(next_usage_json, indent=4)
-# print(len(next_usage_json['value']))
-# with open('report2.txt', 'w+') as report:
-#     report.write(next_usage_json_dump)
 
-#print(usage_json['nextLink'])
 # if result is more than one page, use the nextLink.
-
 while (usage_json['nextLink']):
     usage_next = requests.get(usage_json['nextLink'], headers=get_headers, verify=False)
     usage_next_json = json.loads(usage_next.text)
@@ -116,7 +110,3 @@ while (usage_json['nextLink']):
     except KeyError:
         print("End of Report.")
         usage_json['nextLink'] = False
-
-#with open('report.txt', 'w+') as report:
-#    report.write(usage_json_dump)
-#print(usage_json_dump)
