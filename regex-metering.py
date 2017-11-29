@@ -7,14 +7,16 @@ import collections
 # load the data, export the meterId
 # replace the report_target
 report_target = "app_service_subFROM2017-11-27TO2017-11-28Hourly"
-
 output = []
+
+# read files and get meter id
 def export_meterid(file_name):
     with open(file_name,'r') as file:
         file_json = json.load(file)
         for f in file_json:
             output.append(f['properties']['meterId'])
 
+# map meter id to data
 def map_data(id):
     return {
         'F271A8A388C44D93956A063E1D2FA80B' : 'Static IP Address Usage per IP addresses',
@@ -39,7 +41,6 @@ def map_data(id):
 }.get(id, id + "meter id not found.")
 
 report_patten = report_target + "*"
-
 for file in os.listdir('.'):
     if fnmatch.fnmatch(file, report_patten):
         export_meterid(file)
