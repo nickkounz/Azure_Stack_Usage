@@ -28,6 +28,7 @@ post_data = {
 }
 
 response = requests.post(microsoft_url, data = post_data, headers = post_headers)
+# print(response.text)
 result_json = json.loads(response.text)
 my_token = result_json['access_token']
 
@@ -90,7 +91,8 @@ except:
     print("nextLink is not available.")
 
 # give report a name
-report_name = tenant_sub_name + "FROM" + start_time + "TO" + end_time + granularity + ".txt"
+report_name_convention = tenant_sub_name + "FROM" + start_time + "TO" + end_time + granularity
+report_name = report_name_convention + ".txt"
 write_report(report_name, usage_value_dump)
 
 # get next page usage
@@ -98,6 +100,7 @@ next_usage = requests.get(next_url, headers=get_headers, verify=False)
 next_usage_json = json.loads(next_usage.text)
 
 # if result is more than one page, use the nextLink.
+i = 2
 while (usage_json['nextLink']):
     usage_next = requests.get(usage_json['nextLink'], headers=get_headers, verify=False)
     usage_next_json = json.loads(usage_next.text)
@@ -105,7 +108,9 @@ while (usage_json['nextLink']):
     usage_next_value_dump = json.dumps(usage_next_value, sort_keys=True, indent=4)
     try:
         usage_json['nextLink'] = usage_next_json['nextLink']
+        report_name = report_name_convention + "_Page_" + str(i) + ".txt"
         write_report(report_name, usage_next_value_dump)
+        i += 1
         #print(usage_next_value)
     except KeyError:
         print("End of Report.")
