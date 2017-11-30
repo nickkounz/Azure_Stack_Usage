@@ -2,17 +2,22 @@ import requests
 import json
 import urllib3
 import re
+import sys
 
 # disable warnings
 urllib3.disable_warnings()
 
 # read private credentials from text file
-client_id, client_secret, username, password, app_id_uri, directory_id, admin_arm_url, *_ = open('_PRIVATEwithPass.txt').read().split('\n')
+client_id, client_secret, username, password, directory_id, admin_arm_url, *_ = open('_PRIVATEwithPass.txt').read().split('\n')
 if (client_id.startswith('*') and client_id.endswith('*')) or \
     (client_secret.startswith('*') and client_secret.endswith('*')):
     print('MISSING CONFIGURATION: the _PRIVATEwithPass.txt file needs to be edited ' + \
         'to add client ID and secret.')
     sys.exit(1)
+
+# get authentication_audiences_url
+get_metadata_endpoint = requests.get(admin_arm_url + "/metadata/endpoints?api-version=2015-01-01", verify=False).text
+authentication_audiences_url = json.loads(get_metadata_endpoint)['authentication']['audiences'][0]
 
 # acquire access_token
 microsoft_url = "https://login.microsoftonline.com/" + directory_id + "/oauth2/token?api-version=1.0"
@@ -20,7 +25,7 @@ post_headers = {"Content-Type": "application/x-www-form-urlencoded"}
 post_data = {
     "grant_type" : "password",
     "scope" : "openid",
-    "resource" : app_id_uri,
+    "resource" : authentication_audiences_url,
     "client_id" : client_id,
     "client_secret" : client_secret,
     "username" : username,
@@ -66,16 +71,18 @@ def write_report(file_name, file_content):
 
 # get usage for tenantId
 # define the report rule information
-tenant_sub_name = 'vm_sub'
+tenant_sub_name = 'Windows_Single_Core'
 select_tenantId = return_tenant_id(tenant_sub_name)
-start_time = "2017-11-27"
-end_time = "2017-11-28"
+print(select_tenantId)
+start_time = "2017-11-29"
+end_time = "2017-11-30"
 granularity = "Hourly"
 api_version = "2015-06-01-preview"
 usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
             "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=" + start_time + \
             "&reportedEndTime=" + end_time + \
             "&aggregationGranularity=" + granularity  + \
+            "&subscriberId=" + select_tenantId + \
             "&api-version=" + api_version
 
 # initial get request
