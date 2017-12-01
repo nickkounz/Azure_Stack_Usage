@@ -71,19 +71,20 @@ def write_report(file_name, file_content):
 
 # get usage for tenantId
 # define the report rule information
-tenant_sub_name = 'Windows_Single_Core'
+tenant_sub_name = 'Windows_Mutiple_Core'
 select_tenantId = return_tenant_id(tenant_sub_name)
 print(select_tenantId)
 start_time = "2017-11-29"
-end_time = "2017-11-30"
+end_time = "2017-12-1"
 granularity = "Hourly"
 api_version = "2015-06-01-preview"
 usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
-            "/providers/Microsoft.Commerce/UsageAggregates?reportedStartTime=" + start_time + \
+            "/providers/Microsoft.Commerce/subscriberUsageAggregates?reportedStartTime=" + start_time + \
             "&reportedEndTime=" + end_time + \
             "&aggregationGranularity=" + granularity  + \
             "&subscriberId=" + select_tenantId + \
             "&api-version=" + api_version
+print(usage_url)
 
 # initial get request
 usage = requests.get(usage_url, headers=get_headers, verify=False)
