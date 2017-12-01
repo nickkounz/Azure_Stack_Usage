@@ -84,7 +84,6 @@ usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
             "&aggregationGranularity=" + granularity  + \
             "&subscriberId=" + select_tenantId + \
             "&api-version=" + api_version
-print(usage_url)
 
 # initial get request
 usage = requests.get(usage_url, headers=get_headers, verify=False)
