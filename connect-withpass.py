@@ -71,11 +71,11 @@ def write_report(file_name, file_content):
 
 # get usage for tenantId
 # define the report rule information
-tenant_sub_name = 'Windows_Mutiple_Core'
+tenant_sub_name = 'Linux_Multiple_Core'
 select_tenantId = return_tenant_id(tenant_sub_name)
 print(select_tenantId)
-start_time = "2017-11-29"
-end_time = "2017-12-1"
+start_time = "2017-12-2"
+end_time = "2017-12-4"
 granularity = "Hourly"
 api_version = "2015-06-01-preview"
 usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
@@ -99,7 +99,7 @@ except:
 
 # give report a name
 report_name_convention = tenant_sub_name + "FROM" + start_time + "TO" + end_time + granularity
-report_name = report_name_convention + ".txt"
+report_name = ".\\output\\" + report_name_convention + ".txt"
 write_report(report_name, usage_value_dump)
 
 # get next page usage
