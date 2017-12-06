@@ -34,8 +34,8 @@ def map_data(id):
         'EB43DD12-1AA6-4C4B-872C-FAF15A6785EA' : 'QueueTransactions per Requests count in 10,000s',
         'E518E809-E369-4A45-9274-2017B29FFF25' : 'QueueDataTransIn per Ingress data in GB',
         'DD0A10BA-A5D6-4CB6-88C0-7D585CEF9FC2' : 'QueueDataTransOut per Outgress in GB',
-        'FAB6EB84-500B-4A09-A8CA-7358F8BBAEA5' : 'Base VM Size Hours per Virtual core minutes',
-        '9CD92D4C-BAFD-4492-B278-BEDC2DE8232A' : 'Windows VM Size Hours per Virtual core minutes',
+        'FAB6EB84-500B-4A09-A8CA-7358F8BBAEA5' : 'Base VM Size Hours',
+        '9CD92D4C-BAFD-4492-B278-BEDC2DE8232A' : 'Windows VM Size Hours',
         '6DAB500F-A4FD-49C4-956D-229BB9C8C793' : 'VM size hours per VM hours',
         'EBF13B9F-B3EA-46FE-BF54-396E93D48AB4' : 'Key Vault transactions per Request count in 10000s'
 }.get(id, id + "meter id not found.")
