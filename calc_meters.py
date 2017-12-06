@@ -5,8 +5,8 @@ import fnmatch
 import collections
 
 # load the data, export the meterId
-# replace the report_target
-report_target = "app_service_subFROM2017-11-27TO2017-11-28Hourly"
+# replace the report_target, it's the first part of the report file.
+report_target = "vm_subFROM2017-11-27TO2017-11-28Hourly"
 output = []
 
 # read files and get meter id
