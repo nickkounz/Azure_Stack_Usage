@@ -1,12 +1,3 @@
-import pandas as pd
-from pandas.io.json import json_normalize
-import json
-
-def pandas_read(file_name):
-    with open(file_name, "r") as file:
-        df = pd.read_json(file_name)
-        df.to_excel('output.xls', index = False)
-
 def map_data(id):
     id = id.upper()
     return {
@@ -28,23 +19,14 @@ def map_data(id):
         'FAB6EB84-500B-4A09-A8CA-7358F8BBAEA5' : 'Base VM Size Hours',
         '9CD92D4C-BAFD-4492-B278-BEDC2DE8232A' : 'Windows VM Size Hours',
         '6DAB500F-A4FD-49C4-956D-229BB9C8C793' : 'VM size hours per VM hours',
-        'EBF13B9F-B3EA-46FE-BF54-396E93D48AB4' : 'Key Vault transactions per Request count in 10000s'
+        'EBF13B9F-B3EA-46FE-BF54-396E93D48AB4' : 'Key Vault transactions per Request count in 10000s',
+        'D1D04836-075C-4F27-BF65-0A1130EC60ED' : 'Compute Duration per GB Second',
+        '67CC4AFC-0691-48E1-A4B8-D744D1FEDBDE' : 'Compute Requests per 10 requests',
+        '957E9F36-2C14-45A1-B6A1-1723EF71A01D' : 'Shared App Service Hours',
+        '539CDEC7-B4F5-49F6-AAC4-1F15CFF0EDA9' : 'Free App Service Hours',
+        '88039D51-A206-3A89-E9DE-C5117E2D10A6' : 'Small Standard App Service Hours',
+        '83A2A13E-4788-78DD-5D55-2831B68ED825' : 'Medium Standard App Service Hours',
+        '1083B9DB-E9BB-24BE-A5E9-D6FDD0DDEFE6' : 'Large Standard App Service Hours',
+        '264ACB47-AD38-47F8-ADD3-47F01DC4F473' : 'SNI SSL per Per SNI SSL Binding',
+        '60B42D72-DC1C-472C-9895-6C516277EDB4' : 'IP SSL Per IP Based SSL Binding'
 }.get(id, "unknown meter id")
-
-def write_properties_csv(report, xls_file):
-    with open(report,"r") as file:
-        p_file = []
-        file = json.loads(file.read())
-        for f in file:
-            data = map_data(f['properties']['meterId'])
-            f['properties'].update({'meterName':data})
-            p_file.append(f['properties'])
-        p_json_file = json.dumps(p_file)
-        df = pd.read_json(p_json_file)
-        df.to_excel(xls_file, index = False)
-
-file = "Windows-Single-CoreFROM2017-12-6TO2017-12-7Hourly"
-file_txt = file + '.txt'
-file_xls = file + '.xls'
-pre_location = ".\\output\\"
-write_properties_csv(pre_location + file_txt, pre_location + file_xls)

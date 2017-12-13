@@ -71,11 +71,11 @@ def write_report(file_name, file_content):
 
 # get usage for tenantId
 # define the report rule information
-tenant_sub_name = 'Linux_Multiple_Core'
+tenant_sub_name = 'Shared-Worker-Tier'
 select_tenantId = return_tenant_id(tenant_sub_name)
 print(select_tenantId)
-start_time = "2017-12-2"
-end_time = "2017-12-4"
+start_time = "2017-12-8"
+end_time = "2017-12-11"
 granularity = "Hourly"
 api_version = "2015-06-01-preview"
 usage_url = admin_arm_url + "/subscriptions/" + output_subscription_id + \
