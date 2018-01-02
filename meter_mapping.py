@@ -28,5 +28,8 @@ def map_data(id):
         '83A2A13E-4788-78DD-5D55-2831B68ED825' : 'Medium Standard App Service Hours',
         '1083B9DB-E9BB-24BE-A5E9-D6FDD0DDEFE6' : 'Large Standard App Service Hours',
         '264ACB47-AD38-47F8-ADD3-47F01DC4F473' : 'SNI SSL per Per SNI SSL Binding',
-        '60B42D72-DC1C-472C-9895-6C516277EDB4' : 'IP SSL Per IP Based SSL Binding'
+        '60B42D72-DC1C-472C-9895-6C516277EDB4' : 'IP SSL Per IP Based SSL Binding',
+        'CBCFEF9A-B91F-4597-A4D3-01FE334BED82' : 'SQL Server DatabaseSizeHourSqlMeter',
+        'E6D8CFCD-7734-495E-B1CC-5AB0B9C24BD3' : 'MySQL DatabaseSizeHourMySqlMeter'
+
 }.get(id, "unknown meter id")
